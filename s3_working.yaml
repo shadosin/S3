@@ -1,7 +1,10 @@
-AWSTemplateFormatVersion: 2019-09-09
-Resorces:
+#fixed errors in resources, alignment, versioning, and Type
+#vers 1.1
+#8-11-26
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
   S3Bucket:
-    Type: 'AWS:S3:Bucket'
+    Type: 'AWS::S3::Bucket'
     Properties:
       PublicAccessBlockConfiguration:
         BlockPublicAcls: false
@@ -13,12 +16,14 @@ Resorces:
         ErrorDocument: error.html
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
-BucketPolicy:
-    #Type: 'AWS::S3::BucketPolicy'
+
+  BucketPolicy:
+    Type: 'AWS::S3::BucketPolicy'
     Properties:
+      Bucket: !Ref S3Bucket
       PolicyDocument:
         Id: MyPolicy
-        Version: 2012-10-17
+        Version: '2012-10-17'
         Statement:
           - Sid: PublicReadForGetBucketObjects
             Effect: Allow
@@ -29,7 +34,7 @@ BucketPolicy:
               - - 'arn:aws:s3:::'
                 - !Ref S3Bucket
                 - /*
-      Bucket: !Ref S3Bucket
+
 Outputs:
   WebsiteURL:
     Value: !GetAtt 
